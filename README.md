@@ -6,6 +6,16 @@ Discord is too difficult for me to read with its default theme, so I made this. 
 
 Open <chrome://extensions/> and drag `legible-discord.user.js` in.
 
+## Screenshots
+
+Before:
+
+![](./before.png)
+
+After:
+
+![](./after.png)
+
 ## Code comments
 
 * I hardcoded Noto Sans CJK JP, because that's the font I use. You might install it yourself or replace it. See <https://www.google.com/get/noto/>
