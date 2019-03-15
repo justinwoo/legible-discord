@@ -22,6 +22,9 @@ var intervalId = setInterval(function() {
     .find(c => c.includes("markup"));
 
   if (markupClass) {
+    document.querySelector('textarea').style.color = '#111111';
+    console.log("Set text area color style.");
+
     clearInterval(intervalId);
     var style = document.createElement("style");
     style.innerText = "." + markupClass + "{color:#111111!important}";
