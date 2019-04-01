@@ -2,6 +2,7 @@
 // @name Legible Discord
 // @description Make Discord easier to read by setting the font and colors
 // @match https://discordapp.com/channels/*
+// @version 1.1
 // ==/UserScript==
 
 function log(msg) {
@@ -16,21 +17,26 @@ var array = Array.from;
 body.style.fontFamily = "Noto Sans CJK JP";
 log("Applied font family.");
 
-var intervalId = setInterval(function() {
-  var markupClass = array(document.querySelectorAll("div"))
-    .flatMap(c => array(c.classList))
-    .find(c => c.includes("markup"));
+function mkChangeStyleInterval(keyword, onFound) {
+  var intervalId = setInterval(() => {
+    var keywordClass = array(document.querySelectorAll("div"))
+      .flatMap(c => array(c.classList))
+      .find(c => c.includes(keyword));
 
-  if (markupClass) {
-    document.querySelector('textarea').style.color = '#111111';
-    console.log("Set text area color style.");
+    if (keywordClass) {
+      onFound(keywordClass);
+      clearInterval(intervalId);
+    } else {
+      log(`Could not find ${keyword} class. Trying again in 1s`);
+    }
+  }, 2000);
+}
 
-    clearInterval(intervalId);
-    var style = document.createElement("style");
-    style.innerText = "." + markupClass + "{color:#111111!important}";
-    body.append(style);
-    log("Appended font color style.");
-  } else {
-    log("Could not find markup class. Trying again in 1s");
-  }
-}, 1000);
+mkChangeStyleInterval("markup", markupClass => {
+  document.querySelector("textarea").style.color = "#111111";
+  console.log("Set text area color style.");
+  var style = document.createElement("style");
+  style.innerText = "." + markupClass + "{color:#111111!important}";
+  body.append(style);
+  log("Appended font color style.");
+});
